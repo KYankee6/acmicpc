@@ -11,16 +11,17 @@ int main()
     int N;
     long long answer = 0LL;
     cin >> N;
-    for (int i = 0; i <= 9; i++)
+    for (int i = 1; i <= 9; i++)
     {
         dp[1][i] = 1;
     }
-    dp[2][0]=1;
-    dp[2][1]=1;
-    for(int i=2; i<=8; i++){
-        dp[2][i]=2;
+    dp[2][0] = 1;
+    dp[2][1] = 1;
+    for (int i = 2; i <= 8; i++)
+    {
+        dp[2][i] = 2;
     }
-    dp[2][9]=1;
+    dp[2][9] = 1;
     for (int i = 3; i <= 100; i++)
     {
         for (int j = 0; j <= 9; j++)
@@ -43,5 +44,5 @@ int main()
     {
         answer += dp[N][i] % MOD;
     }
-    cout << answer%MOD;
+    cout << answer % MOD;
 }
