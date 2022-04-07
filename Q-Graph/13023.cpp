@@ -50,7 +50,7 @@ int main()
         cin >> a >> b;
         graph[a].push_back(b);
         graph[b].push_back(a);
-        trav.push_back(a);
+        trav.push_back(a);;
     }
     for (int i = 0; i < trav.size(); i++)
     {
