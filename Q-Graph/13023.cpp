@@ -4,29 +4,24 @@
 
 using namespace std;
 
-vector<int> graph[2001];
+vector<int> graph[1001];
 int N, M;
+vector<int> visited(1001, 0);
 
-bool dfs(int start, int depth, vector<bool> visited)
+void dfs(int start, int& cnt)
 {
-    visited[start] = true;
-    if (depth == 5)
-    {
-        cout << "1";
-        return true;
-    }
+    if (visited[start] != 0)
+        return;
+    visited[start] = cnt;
+    N--;
     for (int i = 0; i < graph[start].size(); i++)
     {
         int next = graph[start][i];
-        if (!visited[next])
+        if (visited[next] == 0)
         {
-            if (dfs(next, depth + 1, visited))
-            {
-                return true;
-            }
+            dfs(next, cnt);
         }
     }
-    return 0;
 }
 int main()
 {
@@ -34,9 +29,11 @@ int main()
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    bool trav[2001];
+    bool trav[1001];
+    int cnt = 0;
     cin >> N >> M;
-
+    fill(visited.begin(), visited.end(), 0);
+    fill(trav, trav + 1001, false);
     for (int i = 0; i < M; i++)
     {
         int a, b;
@@ -46,14 +43,14 @@ int main()
         trav[a] = true;
         trav[b] = true;
     }
-    for (int i = 0; i < 2001; i++)
+
+    for (int i = 1; i < 1001; i++)
     {
-        if (!trav[i])
+        if (!trav[i] || visited[i] != 0)
             continue;
-        vector<bool> visited(2001, false);
-        if (dfs(i, 1, visited))
-            return 0;
+        dfs(i, ++cnt);
+        N++;
     }
-    cout << "0";
+    cout<<N;
     return 0;
 }
