@@ -50,9 +50,10 @@ int main()
         cin >> a >> b;
         graph[a].push_back(b);
         graph[b].push_back(a);
-        trav.push_back(a);;
+        trav.push_back(a);
+        trav.push_back(b);
     }
-    for (int i = 0; i < trav.size(); i++)
+    for (int i = 0; i < trav.size() ; i++)
     {
         vector<bool> visited(N, false);
         if (dfs(trav[i], 1, visited))
