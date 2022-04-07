@@ -9,9 +9,9 @@ vector<int> graph[2001];
 
 int N, M;
 
-bool compare(pair<int,int> t1, pair<int,int> t2)
+bool compare(pair<int, int> t1, pair<int, int> t2)
 {
-    return t1.first==t2.first ? t1.first<t2.first : t1.second<t2.second;
+    return t1.first == t2.first ? t1.second < t2.second : t1.first < t2.second;
 }
 
 bool dfs(int start, int depth, vector<bool> visited)
@@ -41,7 +41,6 @@ int main()
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    vector<pair<int, int>> temp;
     vector<int> trav;
     cin >> N >> M;
 
@@ -49,13 +48,6 @@ int main()
     {
         int a, b;
         cin >> a >> b;
-        temp.push_back({a, b});
-    }
-    sort(temp.begin(),temp.end(),compare);
-    for (int i = 0; i < temp.size(); i++)
-    {
-        int a = temp[i].first;
-        int b = temp[i].second;
         graph[a].push_back(b);
         graph[b].push_back(a);
         trav.push_back(a);
