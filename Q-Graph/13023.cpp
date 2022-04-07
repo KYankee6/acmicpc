@@ -1,18 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <queue>
 
 using namespace std;
 
 vector<int> graph[2001];
-
 int N, M;
-
-bool compare(pair<int, int> t1, pair<int, int> t2)
-{
-    return t1.first == t2.first ? t1.second < t2.second : t1.first < t2.second;
-}
 
 bool dfs(int start, int depth, vector<bool> visited)
 {
@@ -41,7 +34,7 @@ int main()
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    vector<int> trav;
+    bool trav[2001];
     cin >> N >> M;
 
     for (int i = 0; i < M; i++)
@@ -50,13 +43,15 @@ int main()
         cin >> a >> b;
         graph[a].push_back(b);
         graph[b].push_back(a);
-        trav.push_back(a);
-        trav.push_back(b);
+        trav[a] = true;
+        trav[b] = true;
     }
-    for (int i = 0; i < trav.size() ; i++)
+    for (int i = 0; i < 2001; i++)
     {
-        vector<bool> visited(N, false);
-        if (dfs(trav[i], 1, visited))
+        if (!trav[i])
+            continue;
+        vector<bool> visited(2001, false);
+        if (dfs(i, 1, visited))
             return 0;
     }
     cout << "0";
