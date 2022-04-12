@@ -2,61 +2,44 @@
 #include <algorithm>
 #include <vector>
 #include <queue>
-
+#include <tuple>
 using namespace std;
 
 int S;
 
 bool boundary_check(int cur)
 {
-    return cur >= 2 && cur <= 1000;
+    return cur >= 0 && cur <= 1000;
 }
 
 void bfs()
 {
-    vector<int> visited(1001);
-    queue<int> q;
-    fill(visited.begin(), visited.end(), 0);
-    q.push(1);
-    visited[1] = 1;
-    int pre = 1;
+    vector<vector<bool>> visited(1001,vector<bool>(1001,0));     // visited[time][clipboard]=;
+    queue<tuple<int, int, int>> q; // 1 -> display, 2-> clipboard, 3-> time
+    q.push(make_tuple(1,0,0));
+    visited[1][0] = true;
     while (!q.empty())
     {
-        int cur = q.front();
+        int dp = get<0>(q.front());
+        int cb = get<1>(q.front());
+        int t = get<2>(q.front());
         q.pop();
-
-        // copy and paste
-        if (boundary_check(cur * 2) && visited[cur * 2] == 0)
-        {
-            if (cur * 2 == S)
-            {
-                cout << visited[cur]+1;
-                return;
-            }
-            visited[cur * 2] = visited[cur] + 2;
-            q.push(cur * 2);
+        if(dp == S){
+            cout<<t;
+            return;
         }
-        if (boundary_check(cur - 1) && visited[cur - 1] == 0)
-        {
-            if (cur-1 == S)
-            {
-                cout << visited[cur];
-                return;
-            }
-            visited[cur - 1] = visited[cur] + 1;
-            q.push(cur - 1);
+        if(boundary_check(dp) && !visited[dp][dp]){
+            visited[dp][dp]=true;
+            q.push({dp,dp,t+1});
         }
-        if (boundary_check(cur + pre) && visited[cur + pre] == 0)
-        {
-            if (cur + pre == S)
-            {
-                cout << visited[cur];
-                return;
-            }
-            visited[cur + pre] = visited[cur] + 1;
-            q.push(cur + pre);
+        if(boundary_check(dp-1) && !visited[dp-1][cb]){
+            visited[dp-1][cb]=true;
+            q.push({dp-1,cb,t+1});
         }
-        pre = cur;
+        if(boundary_check(dp+cb) && !visited[dp+cb][cb]){
+            visited[dp+cb][cb]=true;
+            q.push({dp+cb,cb,t+1});
+        }
     }
 }
 int main()
