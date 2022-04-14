@@ -45,11 +45,22 @@ int main()
         cin >> M >> N >> x >> y;
         int t1 = 1;
         int t2 = 1;
-        long long answer = 1;
-        bool endseq = false;
-        for (long long i = 1; i <= LCM(M,N); )
+        long long answer = -1;
+        long long lcm_val = LCM(M, N);
+        long long i = x;
+        int temp=x;
+        for (i; i <= lcm_val; i += M)
         {
-            t1 = t1+(M-N);
+            int py = (temp)%N == 0 ? N : (temp)%N;
+            if(py==y){
+                break;
+            }
+            temp=py+M;
         }
+        if(i>lcm_val){
+            cout<<"-1\n";
+        }
+        else cout<<i<<"\n";
+    }
     return 0;
 }
