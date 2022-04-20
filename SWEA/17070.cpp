@@ -7,9 +7,11 @@
 // 2022-04-19 19:04:20 구현 시작
 // 2022-04-19 19:47:23 구현 끝
 // 중간에 visited 벡터를 조금 변형 시켜서 비트마스크화 시킴.
-// 2022-04-19 21:50:45 아니 이걸 못푸네 
+// 2022-04-19 21:50:45 아니 이걸 못푸네
 // 비트마스크와는 개뻘짓이었음
 
+// 2022-04-19 22:16:08 "마지막이 막혀있는 경우가 없다고 한적 없습니다"
+// 마지막이 막혀있으면 탐색하면 time over 납니다... 왜?
 
 #include <bits/stdc++.h>
 
@@ -82,7 +84,7 @@ void bfs()
                 continue;
             if (next_dir == 2)
             {
-                if (next_x == N - 1 && next_y == N - 1)
+                if (next_x == N - 1 && next_y == N - 1 && graph[next_x][next_y] != 1)
                 {
                     bool is_no_wall = true;
                     for (int j = 0; j < 3; j++)
@@ -119,11 +121,11 @@ void bfs()
             }
             else
             {
-                if (next_x == N - 1 && next_y == N - 1)
+                if (next_x == N - 1 && next_y == N - 1 && graph[next_x][next_y] != 1)
                 {
                     answer++;
                 }
-                else if ( graph[next_x][next_y] != 1)
+                else if (graph[next_x][next_y] != 1)
                 {
                     q.push({next_x, next_y, next_dir});
                 }
@@ -148,5 +150,11 @@ int main()
             cin >> graph[i][j];
         }
     }
+    if (graph[N - 1][N - 1] == 1)
+    {
+        cout << 0;
+        return 0;
+    }
     bfs();
+    return 0;
 }
