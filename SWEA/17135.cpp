@@ -10,7 +10,12 @@
 // bfs인데 자꾸 이상한 map으로 iteration 돌리느라 오래걸림
 // 다행이도, 로직에 큰 문제는 없어서 예외처리를 안해도 됐었나봄
 // 문제 이해도 처음에 잘못함. 
+// 객체 만든다고 쌩쇼 +1
 // 문제 이해에 시간을 좀더 투자해도 좋을 것 같다(1시간 기준이므로 <10min? 어떨까)
+
+
+
+// bfs, dfs 시간 복잡도 계산 하는 방법을 잘 모르겠음
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -134,13 +139,6 @@ int main()
                 game[key_x][key_y] = 0;
                 cur_game_score++;
             }
-            // map<pair<int, int>, int>::iterator key = enemies.begin();
-            // vector<pair<int, int>> temp;
-            // for (const auto &key : enemies)
-            // {
-            //     temp.push_back({key.first.first, key.first.second});
-            // }
-
             for (int i = N - 1; i > first_row; i--)
             {
                 for (int j = 0; j < M; j++)
@@ -157,18 +155,6 @@ int main()
             first_row++;
             if (game_over)
                 break;
-            // for (const auto &key : temp)
-            // {
-            //     int key_x = key.first;
-            //     int key_y = key.second;
-            //     game[key_x][key_y] = 0;
-            //     if (key_x + 1 != N)
-            //     { // "제외된다"
-            //         game[key_x + 1][key_y] = 1;
-            //         enemies[{key_x + 1, key_y}] = 1;
-            //     }
-            //     enemies.erase(key);
-            // }
         }
         answer = max(answer, cur_game_score);
     } while (prev_permutation(archer_pos.begin(), archer_pos.end()));
