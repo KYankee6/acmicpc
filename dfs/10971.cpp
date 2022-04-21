@@ -7,23 +7,25 @@
 using namespace std;
 
 int N;
+int answer = INT_MAX;
 vector<vector<int>> W;
 
-int dfs(int src, int depth, vector<bool> visited)
+void dfs(int src, int start, int depth, int cost, vector<bool> &visited)
 {
-    if(visited[src]) return 0;
-    if (depth == N)
-    {
-        // return W[src][dest];
-    }
     visited[src] = true;
-    int result = 0;
+    if (depth == N - 1 && W[src][start] != 0)
+    {
+        answer = min(answer, W[src][start] + cost);
+        return;
+    }
     for (int i = 0; i < W[src].size(); i++)
     {
-        if (W[src][i] != 0)
+        if (!visited[i] && W[src][i] != 0)
         {
-            dfs(i, depth + 1, visited);
-            result += W[src][i];
+            cost += W[src][i];
+            dfs(i, start, depth + 1, cost, visited);
+            cost -= W[src][i];
+            visited[i] = false;
         }
     }
 }
@@ -33,8 +35,6 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-
-    int answer = pow(10, 9) + 1;
     cin >> N;
     W.resize(N, vector<int>(N, 0));
     for (int i = 0; i < N; i++)
@@ -47,9 +47,7 @@ int main()
     for (int i = 0; i < N; i++)
     {
         vector<bool> visited(N, false);
-        int result = dfs(i, 0, visited);
-        if (result != -1)
-            answer = min(answer, result);
+        dfs(i, i, 0, 0, visited);
     }
     cout << answer;
 }
