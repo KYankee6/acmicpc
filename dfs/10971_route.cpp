@@ -10,22 +10,29 @@ int N;
 int answer = INT_MAX;
 vector<vector<int>> W;
 vector<vector<int>> route;
-void dfs(int src, int start, int depth, int cost, vector<bool> &visited)
+vector<vector<int>> answer_route;
+void dfs(int src, int start, int depth, int cost, vector<bool> &visited, vector<int> route)
 {
     visited[src] = true;
-    if (depth == N - 1 && W[src][start] != 0)
+    if (depth == N - 1 && W[src][start] != 0 && answer > cost+W[src][start])
     {
         answer = min(answer, W[src][start] + cost);
+        route.push_back(start);
+        route.push_back(-1);
+        route.push_back(answer);
+        answer_route.push_back(route);
         return;
     }
     for (int i = 0; i < W[src].size(); i++)
     {
-        if (!visited[i] && W[src][i] != 0 && answer>cost+W[src][i])
+        if (!visited[i] && W[src][i] != 0 && answer > cost + W[src][i])
         {
-            
+
             cost += W[src][i];
-            dfs(i, start, depth + 1, cost, visited);
+            route.push_back(i);
+            dfs(i, start, depth + 1, cost, visited, route);
             cost -= W[src][i];
+            route.pop_back();
             visited[i] = false;
         }
     }
@@ -49,7 +56,19 @@ int main()
     for (int i = 0; i < N; i++)
     {
         vector<bool> visited(N, false);
-        dfs(i, i, 0, 0, visited);
+        vector<int> empty_route;
+        empty_route.push_back(i);
+        dfs(i, i, 0, 0, visited, empty_route);
     }
+    for (auto v : answer_route)
+    {
+        cout << "=======================\n";
+        for (auto e : v)
+        {
+            cout << e << " ";
+        }
+        cout << "\n=======================\n";
+    }
+    cout << endl;
     cout << answer;
 }
