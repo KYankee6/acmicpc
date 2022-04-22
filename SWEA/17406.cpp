@@ -29,8 +29,10 @@
 
 // 2022-04-22 20:39:48 nPn 순열 구하는데에 막힘;; 재귀로 구현할 수 있으면 좋으련만 (DFS)
 
+// 2022-04-22 20:50:48 permutation stl로 구현 성공후 AC
 // 2022-04-22 21:00:11 "틀렸습니다" 깨부시작
 // 2022-04-22 21:06:58 아니 순열 구하는거에서 틀린거 실화냐 준혁아...진...짜..눈물날려해..ㅠ
+// 2022-04-22 21:29:52 나는 순열을 못 구하는 컴퓨터공학생입니다. 나는 순열을 못 구하는 컴퓨터공학생입니다. 나는 순열을 못 구하는 컴퓨터공학생입니다.
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -38,6 +40,7 @@ using namespace std;
 int answer = INT_MAX;
 int N, M, K;
 vector<vector<int>> rotate_pos(K, vector<int>(3, 0));
+vector<bool> visited;
 
 int sum_2D_vector(vector<vector<int>> &graph)
 {
@@ -127,25 +130,23 @@ void array_rotator(vector<vector<int>> &graph, int r, int c, int s)
     }
 }
 
-void dfs(int depth, int idx, vector<vector<int>> graph, vector<bool> visited)
+void dfs(int depth, int idx, vector<vector<int>> graph)
 {
-    if (visited[idx])
-        return;
-    if (depth == K - 1)
+    if (depth == K)
     {
-        auto v = rotate_pos[idx];
-        array_rotator(graph, v[0] - 1, v[1] - 1, v[2]);
         answer = min(sum_2D_vector(graph), answer);
         return;
     }
-    visited[idx] = true;
-    for (int i = 0; i < K; i++)
+
+    for (int i = idx; i < K; i++)
     {
         if (!visited[i])
         {
+            visited[i] = true;
             auto v = rotate_pos[i];
             array_rotator(graph, v[0] - 1, v[1] - 1, v[2]);
-            dfs(depth + 1, i, graph, visited);
+            dfs(depth + 1, i, graph);
+            visited[i] = false;
         }
     }
 }
@@ -181,9 +182,8 @@ int main()
             cin >> rotate_pos[i][j];
         }
     }
-
-    vector<bool> visited(K,false);
-    dfs(0, 0, graph, visited);
+    visited.resize(K,false);
+    dfs(0, 0, graph);
     cout << answer;
 
     /**
