@@ -34,9 +34,9 @@ bool in_condition(vector<bool> op_fixer)
     return can_go;
 }
 
-int calculate_vectors(vector<int> &numbers, vector<int> &ops)
+long long calculate_vectors(vector<int> &numbers, vector<int> &ops)
 {
-    int result = numbers[0];
+    long long result = numbers[0];
     for (int i = 0; i < ops.size(); i++)
     {
         int op = ops[i];
@@ -114,8 +114,11 @@ int main()
     cin >> N;
     string expression = "";
     cin >> expression;
-    int answer = calculate_expression(expression);
-
+    long long answer = INT_MIN;
+    if(N==1) {
+        cout<<expression;
+        return 0;
+    }
     vector<bool> op_fixer(N / 2, false);
     for (int r = 0; r < op_fixer.size(); r++)
     {
@@ -124,7 +127,8 @@ int main()
         {
             int op_walker = 0;
             bool first_exp = true;
-            vector<int> numbers(N,);
+            vector<int> numbers;
+            vector<int> visited(N, 0);
             vector<int> ops;
             string result_exp = "";
             if (!in_condition(op_fixer))
@@ -142,33 +146,28 @@ int main()
                         op = 2;
                     ops.push_back(op);
                 }
+                else
+                {
+                    visited[i * 2] = 1;
+                    visited[i * 2 + 1] = -1;
+                    visited[i * 2 + 2] = 1;
+                }
             }
-            for (int i = 1; i < N; i += 2)
+            for (int i = 0; i < N; i++)
             {
-                if (op_fixer[op_walker])
+                if (visited[i] == 0 && i%2==0) 
+                {
+                    numbers.push_back(expression[i] - '0');
+                }
+                else if (visited[i] == -1)
                 {
                     numbers.push_back(calculate_expression(expression.substr(i - 1, 3)));
                 }
-                else
-                {
-                    if (op_fixer[op_walker + 1])
-                    {
-                        continue;
-                    }
-                    else if (!op_fixer[op_walker + 1])
-                    {
-                        numbers.push_back(expression[i - 1] - '0');
-                    }
-                    else {
-                        numbers.push_back(expression[i + 1] - '0');
-                    }
-                }
-                op_walker++;
             }
-            if (!op_fixer[op_walker])
-                numbers.push_back(expression[expression.size() - 1] - '0');
+
             answer = max(answer, calculate_vectors(numbers, ops));
         } while (prev_permutation(op_fixer.begin(), op_fixer.end()));
     }
     cout << answer;
+    return 0;
 }
