@@ -76,14 +76,36 @@
 using namespace std;
 
 int N, M;
-priority_queue<tuple<int, int, int>> costs; // 0-> cost, 1-> src, 2-> dest
-vector<vector<int>> graph; // 0-> cost, 1-> src, 2-> dest
-vector<bool> visited;
-vector<bool> not_visited;
+int answer = 0;
 
-bool cmp(tuple<int, int, int> t1, tuple<int, int, int> t2)
+priority_queue<pair<int, int>> costs; // 0-> cost, 1-> src, 2-> dest
+vector<vector<int>> graph;            // 0-> cost, 1-> src, 2-> dest
+vector<bool> visited;
+
+void prim()
 {
-    return get<2>(t1) < get<2>(t2);
+    costs.push({0, 0});
+
+    while (!costs.empty())
+    {
+        auto cur = costs.top();
+        costs.pop();
+        int cost = -get<0>(cur);
+        int cur_node = get<1>(cur);
+        if (visited[cur_node])
+            continue;
+        visited[cur_node] = true;
+        answer += cost;
+
+        for (int i = 0; i < graph[cur_node].size(); i++)
+        {
+            auto next_cost = graph[cur_node][i];
+            if (next_cost != 0 && !visited[i])
+            {
+                costs.push({-next_cost, i});
+            }
+        }
+    }
 }
 int main()
 {
@@ -91,32 +113,19 @@ int main()
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    int answer = 0;
     int cnt = 0;
     cin >> N >> M;
-    graph.resize(N,vector<int>(N,0));
+    graph.resize(N, vector<int>(N, 0));
     visited.resize(N, false);
-    not_visited.resize(N, true);
     for (int i = 0; i < M; i++)
     {
         int src, dest, cost;
         cin >> src >> dest >> cost;
         if (src == dest)
             continue;
-        costs.push({-cost, src - 1, dest - 1});
-        graph[src][dest]=cost;
+        graph[src - 1][dest - 1] = cost;
+        graph[dest - 1][src - 1] = cost;
     }
-    while (cnt != N)
-    {
-        auto cur = costs.top();
-        int cost = -get<0>(cur);
-        int src = get<1>(cur);
-        int dest = get<2>(cur);
-        costs.pop();
-        visited[src] = true;
-        visited[dest] = true;
-        not_visited[src] = false;
-        not_visited[dest] = false;
-    }
+    prim();
     cout << answer;
 }
