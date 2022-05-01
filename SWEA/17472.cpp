@@ -20,6 +20,9 @@
 // get_root 잘못써서 AC 안되고
 // 2022-04-28 01:26:44 AC받음 소요시간 총 1시간
 // 코테도 이렇게 나오면 좋겠다..
+
+// N = 100 M = 100 N*M = 10000
+// c++ 1억번 연산 == 1초 .
 #include <bits/stdc++.h>
 #define in_range(x, y) x >= 0 && y >= 0 && x < N &&y < M
 using namespace std;
