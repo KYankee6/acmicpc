@@ -4,8 +4,12 @@
 // 혹은 두개 다익스트라 때려보기
 
 // 2022-05-10 18:10:03 까다롭네용
+//  2022-05-11 01:26:02 접근 법은 맞았는데 구현에서 좀 삽질했따.
+// 특히 INF 값 설정이 힘들었다..
+// 987654321로 하면 NAC
+// 8~1로 하면 ac
 #include <bits/stdc++.h>
-#define INF 987654321
+#define INF 87654321
 using namespace std;
 
 int answer = INF;
@@ -29,7 +33,7 @@ void dijkstra(int start)
         for (int i = 0; i < graph[cur].size(); i++)
         {
             int next = graph[cur][i].first;
-            int cost = graph[cur][i].second + cCost;
+            int cost = graph[cur][i].second;
             if (dist[next] > dist[cur] + cost)
             {
                 dist[next] = dist[cur] + cost;
@@ -58,27 +62,37 @@ int main()
         graph[dest].push_back({src, cost});
     }
     cin >> mv1 >> mv2;
-
+    mv1--;
+    mv2--;
     dijkstra(0);
-    // // mv1
-    // int mv1_cost = dist[mv1];
+    int answer1 = 0;
+    int answer2 = 0;
+    int answer3 = 0;
+    int answer4 = 0;
 
-    // // mv2 -> mv1
-    // int mv2_cost = dist[mv2];
 
-    // fill(dist.begin(), dist.end(), INF);
-    // dijkstra(mv1, mv1_cost);
-    // int tmp1 = dist[mv2];
-    // fill(dist.begin(), dist.end(), INF);
-    // dijkstra(mv2, tmp1);
-    // answer = min(answer, dist[V - 1]);
+    // 0 -> mv1 -> mv2 -> N
+    int zero_to_mv1_cost = dist[mv1];
 
-    // fill(dist.begin(), dist.end(), INF);
-    // dijkstra(mv2, mv2_cost);
-    // int tmp2 = dist[mv1];
-    // fill(dist.begin(), dist.end(), INF);
-    // dijkstra(mv1, tmp2);
-    // answer = min(answer, dist[V - 1]);
-    // cout << answer;
+    // 0 -> mv2 -> mv1 -> N
+    int zero_to_mv2_cost = dist[mv2];
+
+    fill(dist.begin(), dist.end(), INF);
+    dijkstra(mv1);
+    int mv12_cost = dist[mv2];
+    int mv1_end_cost = dist[V-1];
+
+    fill(dist.begin(), dist.end(), INF);
+    dijkstra(mv2);
+    int mv21_cost = dist[mv1];
+    int mv2_end_cost = dist[V-1];
+
+    answer1 += zero_to_mv1_cost + mv12_cost + mv2_end_cost;
+    answer2 += zero_to_mv2_cost + mv21_cost + mv1_end_cost;
+    answer = min(answer1,answer2);
+    if (answer >= INF)
+        cout << -1;
+    else
+        cout << answer;
     return 0;
 }
