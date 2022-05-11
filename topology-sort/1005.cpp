@@ -9,15 +9,74 @@
 // 안될것같다 될것같은데? 오히려 weight와 조건이 가능하게 만드는것 같은데?
 
 // 2022-05-11 18:25:09 구현해봄 알게찌..
+// 선수 공사를 마쳐야 하는 리스트를 구현해보자
+// 2D vector로 idx로 쓰자
+// 선수 공사가 끝났는지를 확인하는 리스트를 구현하자
+// 1D vector bool idx로 쓰자
 #include <bits/stdc++.h>
 using namespace std;
 
-int V, E,W;
+int V, E, W;
 
-int topology_sort(vector<vector<int>> &graph, vector<int> &indegree)
+// 살짝 BFS 식으로 풀어본 문제
+// 문제점
+// pre-requisite의 indegree를 고려하지 못함.
+// 오우 이거 안되겠따
+
+// int myFunc(vector<int> &indegree, vector<int> &weights, vector<set<int>> &pre_req)
+// {
+//     int result = 0;
+//     vector<bool> visited(V, false);
+//     vector<int> left_sum;
+//     set<int> cur_pre_req = pre_req[W];
+//     int cur_indeg = 0;
+//     while (true)
+//     {
+//         bool no_indeg = true;
+//         int cur_max = INT_MIN;
+//         set<int> next_pre_req;
+//         for (auto iter : cur_pre_req)
+//         {
+//             if (visited[iter])
+//                 continue;
+
+//             visited[iter] = true;
+
+//             if (cur_max < weights[iter])
+//                 cur_max = weights[iter];
+//             if (indegree[iter] != 0)
+//             {
+//                 no_indeg = false;
+//             }
+//         }
+//         if (cur_max != INT_MIN)
+//             result += cur_max;
+//         else
+//             break;
+//         if (no_indeg)
+//             break;
+
+//         for (auto iter : cur_pre_req)
+//         {
+//             next_pre_req.insert(pre_req[iter].begin(), pre_req[iter].end());
+//             next_pre_req.insert(iter);
+//         }
+//         cur_indeg++;
+//         cur_pre_req = next_pre_req;
+//     }
+//     return result + weights[W];
+// }
+
+
+
+// 톺솔의 한가지 문제점
+// 동시에 건물 짓는 지를 모른다
+// 그렇다면 일단 W까지의 순서만 정해놓고,
+// 앞에 녀석들이 동시에 지어지는지 안지어지는지를 어떻게 구별할까?
+
+int topology_sort(vector<int> &indegree, vector<int> &weights, vector<vector<int>> &graph)
 {
-    int result = 0;
-    queue<int> q;
+    queue<int>q;
     for (int i = 0; i < indegree.size(); i++)
     {
         if (indegree[i] == 0)
@@ -29,9 +88,6 @@ int topology_sort(vector<vector<int>> &graph, vector<int> &indegree)
     {
         int cur = q.front();
         q.pop();
-        if(cur==W){
-            
-        }
         for (int i = 0; i < graph[cur].size(); i++)
         {
             int node = graph[cur][i];
@@ -54,11 +110,9 @@ int main()
     while (T--)
     {
         cin >> V >> E;
-        vector<vector<int>> graph(V);
         vector<int> weights(V, 0);
-
         vector<int> indegree(V, 0);
-        vector<int> answer;
+        vector<set<int>> pre_req(V);
         for (int i = 0; i < V; i++)
         {
             cin >> weights[i];
@@ -69,15 +123,11 @@ int main()
             cin >> from >> to;
             from--;
             to--;
-            graph[from].push_back(to);
             indegree[to]++;
+            pre_req[to].insert(from);
         }
-        cin>>W;
+        cin >> W;
         W--;
-        topology_sort(graph, indegree);
-        for (auto e : answer)
-        {
-            cout << e + 1 << " ";
-        }
+        cout << myFunc(indegree, weights, pre_req) << "\n";
     }
 }
