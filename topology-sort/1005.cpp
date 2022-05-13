@@ -67,16 +67,17 @@ int V, E, W;
 //     return result + weights[W];
 // }
 
-
-
 // 톺솔의 한가지 문제점
 // 동시에 건물 짓는 지를 모른다
 // 그렇다면 일단 W까지의 순서만 정해놓고,
 // 앞에 녀석들이 동시에 지어지는지 안지어지는지를 어떻게 구별할까?
 
+// 2022-05-13 18:22:15 DP로 해결하는것 같다..
+
 int topology_sort(vector<int> &indegree, vector<int> &weights, vector<vector<int>> &graph)
 {
-    queue<int>q;
+    vector<int> result = weights;
+    queue<int> q;
     for (int i = 0; i < indegree.size(); i++)
     {
         if (indegree[i] == 0)
@@ -84,20 +85,22 @@ int topology_sort(vector<int> &indegree, vector<int> &weights, vector<vector<int
             q.push(i);
         }
     }
-    while (!q.empty())
-    {
-        int cur = q.front();
-        q.pop();
-        for (int i = 0; i < graph[cur].size(); i++)
+        while (!q.empty())
         {
-            int node = graph[cur][i];
-            indegree[node]--;
-            if (indegree[node] == 0)
+            int cur = q.front();
+            q.pop();
+            for (int i = 0; i < graph[cur].size(); i++)
             {
-                q.push(node);
+                int node = graph[cur][i];
+                indegree[node]--;
+                result[node] = max(result[node],result[cur]+weights[node]);
+                if (indegree[node] == 0)
+                {
+                    q.push(node);
+                }
             }
         }
-    }
+    return result[W];
 }
 int main()
 {
@@ -112,7 +115,8 @@ int main()
         cin >> V >> E;
         vector<int> weights(V, 0);
         vector<int> indegree(V, 0);
-        vector<set<int>> pre_req(V);
+        vector<vector<int>> graph(V);
+        vector<int> pre_req;
         for (int i = 0; i < V; i++)
         {
             cin >> weights[i];
@@ -124,10 +128,11 @@ int main()
             from--;
             to--;
             indegree[to]++;
-            pre_req[to].insert(from);
+            graph[from].push_back(to);
         }
         cin >> W;
         W--;
-        cout << myFunc(indegree, weights, pre_req) << "\n";
+
+        cout << topology_sort(indegree, weights, graph) << "\n";
     }
 }
