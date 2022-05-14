@@ -1,0 +1,30 @@
+{
+    "folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\intensive-course"
+		}
+	],
+    "settings": {
+        "files.associations": {
+            "vector": "cpp",
+            "utility": "cpp",
+            "stack": "cpp",
+            "deque": "cpp",
+            "initializer_list": "cpp",
+            "queue": "cpp",
+            "type_traits": "cpp",
+            "xstring": "cpp",
+            "xutility": "cpp",
+            "iostream": "cpp",
+            "xlocinfo": "cpp",
+            "numeric": "cpp",
+            "valarray": "cpp",
+            "*.tcc": "cpp",
+            "tuple": "cpp",
+            "string": "cpp"
+        }
+    }
+}
