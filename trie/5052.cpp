@@ -7,11 +7,12 @@
 using namespace std;
 #define MAX_CHILD 10
 
+bool answer = false;
 struct Trie
 {
     char x;
-    Trie *children[MAX_CHILD];
-    bool isEnd;
+    Trie *children[MAX_CHILD]={};
+    bool isEnd=false;
     Trie(){};
     Trie(char _x) : x(_x), isEnd(false){};
     ~Trie()
@@ -25,7 +26,7 @@ struct Trie
         }
     }
 
-    bool insert(string &str, int idx)
+    void insert(string &str, int idx)
     {
         if (idx == str.size())
         {
@@ -33,29 +34,18 @@ struct Trie
         }
         else
         {
-            char cur = str[idx];
-            if (find(cur) == false)
+            if (isEnd)
             {
-                int next = cur - '0';
-                children[next] = new Trie(cur);
-                if (!insert(str, idx + 1))
-                    return false;
+                answer = true;
+                return;
             }
-            else
+            int child_idx = str[idx] - '0';
+            if (children[child_idx] == nullptr)
             {
-                if (isEnd)
-                    return false;
-                if (!insert(str, idx + 1))
-                    return false;
+                children[child_idx] = new Trie;
             }
+            children[child_idx]->insert(str, idx + 1);
         }
-        return true;
-    }
-
-    bool find(char cur)
-    {
-        int idx = cur - '0';
-        return children[idx] == nullptr;
     }
 };
 
@@ -71,19 +61,20 @@ main()
     {
         int n;
         cin >> n;
-        Trie *root = new Trie('.');
-        bool result = true;
+        Trie *root = new Trie;
+        answer = false;
+        vector<string> numbers;
         for (int i = 0; i < n; i++)
         {
             string number;
             cin >> number;
-            if (!root->insert(number, 0))
-            {
-                result = false;
-                break;
-            }
+            numbers.push_back(number);
         }
-        if (result)
+        sort(numbers.begin(),numbers.end());
+        for(int i=0; i<n; i++){
+            root->insert(numbers[i],0);
+        }
+        if (!answer)
         {
             cout << "YES\n";
         }
