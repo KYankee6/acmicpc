@@ -24,7 +24,8 @@
             "valarray": "cpp",
             "*.tcc": "cpp",
             "tuple": "cpp",
-            "string": "cpp"
+            "string": "cpp",
+            "complex": "cpp"
         }
     }
 }

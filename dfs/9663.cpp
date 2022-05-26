@@ -18,29 +18,79 @@
 
 // 2022-04-27 00:41:12 세번째 시도
 // 해답법 보고 시도중
+
+// 2022-05-26 16:56:15 네번째 시도
+// 안녕? N-Queen 문제야?
+// 나와 같이 시간을 보내보자.
+
+// 2022-05-26 18:04:48 AC
+// 한시간 십분이 걸렸습니다..
+
 #include <bits/stdc++.h>
-#define in_range(x, y) (0 <= y && 0 <= x && x < N && y < N)
 using namespace std;
 
-int answer = 0;
-int left = 0;
+int answer;
 int N;
-int half;
-vector<vector<int>> graph;
-vector<int> col;
+deque<int> visited;
 
-bool all_checked()
+bool diag_check(int x)
 {
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < x; i++)
     {
-        for (int j = 0; j < N; j++)
-        {
-            if (graph[i][j] != 1)
-                return false;
-        }
+        // case 0: if row or column are same position, it can't be diagonal.
+        if (visited[i] == visited[x] || abs(x - i) == abs(visited[x] - visited[i]))
+            return false;
     }
     return true;
 }
+
+void dfs(int depth)
+{
+    if (depth == N)
+    {
+        answer++;
+        return;
+    }
+    for (int i = 0; i < N; i++)
+    {
+        visited[depth] = i;
+        if (diag_check(depth))
+        {
+            dfs(depth + 1);
+        }
+    }
+}
+int main()
+{
+    cin >> N;
+    visited.resize(N, -1);
+    dfs(0);
+    cout << answer;
+}
+
+// #include <bits/stdc++.h>
+// #define in_range(x, y) (0 <= y && 0 <= x && x < N && y < N)
+// using namespace std;
+
+// int answer = 0;
+// int left = 0;
+// int N;
+// int half;
+// vector<vector<int>> graph;
+// vector<int> col;
+
+// bool all_checked()
+// {
+//     for (int i = 0; i < N; i++)
+//     {
+//         for (int j = 0; j < N; j++)
+//         {
+//             if (graph[i][j] != 1)
+//                 return false;
+//         }
+//     }
+//     return true;
+// }
 
 // void uncheck(vector<pair<int, int>> &v)
 // {
@@ -61,41 +111,41 @@ bool all_checked()
 //     }
 //     return true;
 // }
-bool check(int level)
-{
-    for(int i = 0; i < level; i++)
-        if(col[i] == col[level] || abs(col[level] - col[i]) == level - i)
-            return false;
-    return true;
-}
-void dfs(int x)
-{
-    if (x == N)
-    {
-        answer++;
-        return;
-    }
+// bool check(int level)
+// {
+//     for(int i = 0; i < level; i++)
+//         if(col[i] == col[level] || abs(col[level] - col[i]) == level - i)
+//             return false;
+//     return true;
+// }
+// void dfs(int x)
+// {
+//     if (x == N)
+//     {
+//         answer++;
+//         return;
+//     }
 
-    for (int i = 0; i < N; i++)
-    {
-        col[x] = i;
-        if(check(x)) dfs(x+1);
-    }
-}
-int main()
-{
-    cin >> N;
-    half = N % 2 == 0 ? N / 2 : (N / 2) + 1;
-    graph.resize(N, vector<int>(N, 0));
-    col.resize(N, 0);
-    if (N == 1)
-    {
-        cout << N;
-        return 0;
-    }
+//     for (int i = 0; i < N; i++)
+//     {
+//         col[x] = i;
+//         if(check(x)) dfs(x+1);
+//     }
+// }
+// int main()
+// {
+//     cin >> N;
+//     half = N % 2 == 0 ? N / 2 : (N / 2) + 1;
+//     graph.resize(N, vector<int>(N, 0));
+//     col.resize(N, 0);
+//     if (N == 1)
+//     {
+//         cout << N;
+//         return 0;
+//     }
 
-    dfs(0);
+//     dfs(0);
 
-    cout << answer;
-    return 0;
-}
+//     cout << answer;
+//     return 0;
+// }
