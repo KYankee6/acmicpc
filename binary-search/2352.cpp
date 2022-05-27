@@ -29,7 +29,7 @@ int main()
         else
         {
             auto it = lower_bound(lis.begin(), lis.end(), v[j]);
-            lis[it - lis.begin()] = v[j];
+            *it = v[j];
         }
         j++;
     }
