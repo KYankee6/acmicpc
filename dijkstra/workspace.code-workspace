@@ -5,6 +5,10 @@
 		},
 		{
 			"path": ".."
+		},
+		{
+			"name": "job-interview-review",
+			"path": "..\\..\\job-interview-review"
 		}
 	],
 	"settings": {
