@@ -25,7 +25,8 @@
             "*.tcc": "cpp",
             "tuple": "cpp",
             "string": "cpp",
-            "complex": "cpp"
+            "complex": "cpp",
+            "iosfwd": "cpp"
         }
     }
 }
