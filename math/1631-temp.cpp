@@ -75,9 +75,11 @@ int main()
         cin >> dest[i];
     }
     int walk = 1;
-    int bound = N - 1;
+    int bound = N;
     while (true)
     {
+        if (M == 0)
+            break;
         while (true)
         {
             if (M - dp[walk] <= 0)
@@ -85,39 +87,28 @@ int main()
                 M -= dp[walk - 1];
                 for (int i = 0; i < walk - 1; i++)
                 {
-                    src[i] = getEmptyPoll(src[bound], dest[bound]);
+                    src[i] = getEmptyPoll(src[bound - 1], dest[bound - 1]);
                 }
                 break;
             }
-            else if (walk == bound + 1)
+            if (walk == bound)
             {
                 M -= dp[walk];
                 for (int i = 0; i < walk - 1; i++)
                 {
-                    src[i] = getEmptyPoll(src[bound], dest[bound]);
+                    src[i] = getEmptyPoll(src[bound - 1], dest[bound - 1]);
                 }
+                src[bound - 1] = dest[bound - 1];
                 break;
             }
             walk++;
         }
-        if (M - dp[walk - 1] > 0)
+        if (walk == bound)
+            bound--;
+        if (M - dp[walk] > 0)
         {
             walk = 1;
-            bound--;
         }
-        else
-        {
-            break;
-        }
-    }
-    int idx = walk;
-    if (idx == bound + 1)
-        idx = bound - 1;
-    hanoi(M, 
-    for (auto e : src)
-    {
-        cout << e;
     }
     return 0;
-}
 }
