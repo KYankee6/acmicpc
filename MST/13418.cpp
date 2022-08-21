@@ -26,7 +26,7 @@ int get_root(int x)
     if (x == parent[x])
         return parent[x];
     else
-        return parent[x] = get_root(x);
+        return parent[x] = get_root(parent[x]);
 }
 
 void set_union(int x, int y)
@@ -41,6 +41,7 @@ void set_union(int x, int y)
 
 int get_mst(vector<pos> &edges)
 {
+
     int result = 0;
     for (int i = 0; i < edges.size(); i++)
     {
@@ -76,12 +77,12 @@ int main()
         edges.push_back({c, a, b});
     }
     sort(edges.begin(), edges.end(), asc_pos);
-    min_sum = get_mst(edges);
-    min_sum *= min_sum;
-    iota(parent.begin(), parent.end(), 0);
-    sort(edges.begin(), edges.end(), desc_pos);
     max_sum = get_mst(edges);
     max_sum *= max_sum;
+    iota(parent.begin(), parent.end(), 0);
+    sort(edges.begin(), edges.end(), desc_pos);
+    min_sum = get_mst(edges);
+    min_sum *= min_sum;
     cout << max_sum - min_sum;
     return 0;
 }
