@@ -16,7 +16,7 @@ int main()
     for (int i = 0; i < N; i++)
     {
         int op;
-        cin >> op;
+        cin >> op;  
         if (op == 0)
         {
             if (pq.empty())
