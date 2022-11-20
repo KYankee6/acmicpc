@@ -8,6 +8,9 @@
         },
         {
             "path": "../leetCode"
+        },
+        {
+            "path": "../codeforces"
         }
     ],
     "settings": {
