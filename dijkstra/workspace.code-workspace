@@ -9,6 +9,10 @@
 		{
 			"name": "job-interview-review",
 			"path": "..\\..\\job-interview-review"
+		},
+		{
+			"name": "leetcode",
+			"path": "../../leetcode"
 		}
 	],
 	"settings": {
